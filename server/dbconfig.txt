@@ -1,0 +1,3 @@
+
+
+mongodb+srv://ipakrashi:indr7744@youtube-mern-complete-c.g2werik.mongodb.net/yt-mern-2024?appName=youtube-mern-complete-course-2024

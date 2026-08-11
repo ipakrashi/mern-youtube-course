@@ -1,0 +1,11 @@
+{
+    "name": "mern-youtube-course",
+    "version": "1.0.0",
+    "type": "module",
+    "scripts": {
+        "dev": "concurrently -n \"CLIENT,SERVER\" -c \"cyan,yellow\" \"npm run dev --prefix client\" \"npm run start --prefix server\""
+    },
+    "devDependencies": {
+        "concurrently": "^9.0.0"
+    }
+}
