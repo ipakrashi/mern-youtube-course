@@ -1,7 +1,10 @@
 import CommonForm from '@/components/common/Form'
 import { registerFormControls } from '@/config'
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom' // Removed 'data' import
+import { registerUser } from '@/store/auth-slice/index.js'
+import { toast } from '@/components/ui/toast'
 
 const initialState = {
     userName: '',
@@ -9,10 +12,23 @@ const initialState = {
     password: '',
 }
 
-function onSubmit() {}
-
 const AuthRegister = () => {
     const [formData, setFormData] = useState(initialState)
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+
+    function onSubmit(e) {
+        e.preventDefault()
+
+        // Chain .then() to receive the resolved action object from Redux
+        dispatch(registerUser(formData))
+        toast.add({
+            title: 'Registration Successful',
+        })
+
+        navigate('/auth/login')
+    }
+
     return (
         <div className='mx-auto w-full max-w-md space-y-6'>
             <div className='text-center'>

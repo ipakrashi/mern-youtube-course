@@ -5,6 +5,7 @@ import mongoose from 'mongoose'
 import connectDB from '../server/db/dbConnect.js'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
+import authRouter from './routes/auth/authRoutes.js'
 dns.setServers(['8.8.8.8', '8.8.4.4'])
 const app = express()
 const PORT = process.env.PORT || 3000
@@ -32,9 +33,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
 // Routes
-app.get('/', (req, res) => {
-    res.send('<h1>HOME PAGE</h1>')
-})
+app.use('/api/auth', authRouter)
 
 // Custom Error Handlers
 
