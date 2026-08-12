@@ -14,6 +14,7 @@ import ShoppingListing from './pages/shopping-view/Listing'
 import ShoppingCheckout from './pages/shopping-view/Checkout'
 import ShoppingAccount from './pages/shopping-view/Account'
 import CheckAuth from './components/common/CheckAuth'
+import UnauthPage from './pages/unauth-page/index.jsx'
 
 const App = () => {
     const isAuthenticated = false
@@ -83,7 +84,8 @@ const App = () => {
                             <NotFound />
                         </CheckAuth>
                     }
-                ></Route>
+                />
+                <Route path='/unauth-page' element={<UnauthPage />} />
             </Routes>
         </div>
     )
