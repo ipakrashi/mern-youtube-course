@@ -18,7 +18,15 @@ const AuthLogin = () => {
     function onSubmit(event) {
         event.preventDefault()
         dispatch(loginUser(formData)).then((data) => {
-            console.log(data)
+            if (data?.payload?.success) {
+                // Optional: Redirect immediately based on user role
+                const role = data.payload.user?.role
+                if (role === 'admin') {
+                    navigate('/admin/dashboard')
+                } else {
+                    navigate('/shop/home')
+                }
+            }
         })
     }
 

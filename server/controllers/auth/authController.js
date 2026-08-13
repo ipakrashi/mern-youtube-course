@@ -82,4 +82,66 @@ const registerUser = asyncHandler(async (req, res) => {
         res.status(500).json({ success: false, message: 'Some Error Occurred' })
     }
 })
-export { registerUser, loginUser }
+
+// @desc      TO LOGOUT AN USER
+//  route       POST '/logout'
+//  @access  PUBLIC
+const logoutUser = asyncHandler(async (req, res) => {
+    try {
+        // 1. Clear Cookie
+        res.clearCookie('token')
+            .status(200)
+            .json({ success: true, message: 'User Logged Out' })
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            success: false,
+            message: 'Some Error Occurred',
+        })
+    }
+})
+
+// CHECK-AUTH - PROTECT FUNCTION
+
+const checkAuth = asyncHandler(async (req, res) => {
+    const user = req.user
+    console.log(user)
+
+    res.status(200).json({ success: true, message: 'Authenticated User', user })
+})
+
+// Auth Middleware
+const protect = asyncHandler(async (req, res, next) => {
+    let token
+
+    // READ THE JWT FROM COOKIE
+    token = req.cookies.token
+    if (token) {
+        try {
+            const decoded = jwt.verify(token, 'CLIENT_SECRET_KEY')
+            // Ensure decoded key matches what you signed (userId or id)
+            req.user = await userModel
+                .findById(decoded.userId || decoded.id)
+                .select('-password')
+            next()
+        } catch (error) {
+            res.status(401)
+            throw new Error('Not Authorized, Invalid Token')
+        }
+    } else {
+        res.status(401)
+        throw new Error('Not Authorized, No Token')
+    }
+})
+
+// ADMIN MIDDLEWARE
+const admin = (req, res, next) => {
+    if (req.user && req.user.role === 'admin') {
+        next()
+    } else {
+        res.status(401)
+        throw new Error('Not Authorized as Admin')
+    }
+}
+
+export { registerUser, loginUser, logoutUser, protect, admin, checkAuth }

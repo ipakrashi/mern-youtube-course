@@ -15,14 +15,33 @@ import ShoppingCheckout from './pages/shopping-view/Checkout'
 import ShoppingAccount from './pages/shopping-view/Account'
 import CheckAuth from './components/common/CheckAuth'
 import UnauthPage from './pages/unauth-page/index.jsx'
+import { useDispatch, useSelector } from 'react-redux'
+import { useEffect } from 'react'
+import { checkAuth } from './store/auth-slice'
 
 const App = () => {
-    const isAuthenticated = false
-    const user = null
+    const { user, isAuthenticated, isLoading } = useSelector(
+        (state) => state.authR,
+    )
+    const dispatch = useDispatch()
+
+    // To check JWT Token everytime the page refreshes and redirect user to the correct page
+    useEffect(() => {
+        dispatch(checkAuth())
+    }, [dispatch])
+
+    if (isLoading) {
+        return (
+            <div className='flex h-screen w-full items-center justify-center'>
+                <h1>Loading ...... </h1>
+            </div>
+        )
+    }
 
     return (
         <div className='flex flex-col overflow-hidden bg-white'>
             {/* Common Component */}
+
             <Routes>
                 {/* auth Routes */}
                 <Route
