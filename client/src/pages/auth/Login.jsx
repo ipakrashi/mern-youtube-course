@@ -1,17 +1,27 @@
 import CommonForm from '@/components/common/Form'
 import { loginFormControls } from '@/config'
+import { loginUser } from '@/store/auth-slice'
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
 
 const initialState = {
     email: '',
     password: '',
 }
 
-function onSubmit() {}
-
 const AuthLogin = () => {
     const [formData, setFormData] = useState(initialState)
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+
+    function onSubmit(event) {
+        event.preventDefault()
+        dispatch(loginUser(formData)).then((data) => {
+            console.log(data)
+        })
+    }
+
     return (
         <div className='mx-auto w-full max-w-md space-y-6'>
             <div className='text-center'>
