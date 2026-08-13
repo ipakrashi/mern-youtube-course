@@ -105,7 +105,6 @@ const logoutUser = asyncHandler(async (req, res) => {
 
 const checkAuth = asyncHandler(async (req, res) => {
     const user = req.user
-    console.log(user)
 
     res.status(200).json({ success: true, message: 'Authenticated User', user })
 })
