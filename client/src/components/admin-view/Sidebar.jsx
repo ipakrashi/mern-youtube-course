@@ -42,9 +42,9 @@ const AdminSideBar = ({ open, setOpen }) => {
                         <SheetHeader className='border-b'>
                             <SheetTitle className='flex gap-2 my-2'>
                                 <UserShield size={30} className='mr-2' />
-                                <h1 className='text-2xl font-extrabold'>
+                                <span className='text-2xl font-extrabold'>
                                     Admin Panel
-                                </h1>
+                                </span>
                             </SheetTitle>
                         </SheetHeader>
                         <MenuItems setOpen={setOpen} />
@@ -59,7 +59,7 @@ const AdminSideBar = ({ open, setOpen }) => {
                     onClick={() => navigate('/admin/dashboard')}
                 >
                     <UserShield size={30} />
-                    <h1 className='text-2xl font-extrabold'>Admin Panel</h1>
+                    <span className='text-2xl font-extrabold'>Admin Panel</span>
                 </div>
                 <MenuItems />
             </aside>

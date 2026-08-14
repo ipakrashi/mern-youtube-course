@@ -14,18 +14,20 @@ function ProductImageUpload({
 
     const handleImageFileChange = (e) => {
         const selectedFile = e.target.files?.[0]
-        console.log(selectedFile)
 
         if (selectedFile) setImageFile(selectedFile)
     }
 
     const handleDragOver = (e) => {
         e.preventDefault()
+        const draggedFile = e.dataTransfer.files?.[0]
+
+        if (draggedFile) setImageFile(draggedFile)
     }
     const handleDrop = (e) => {
         e.preventDefault()
         const droppedFile = e.dataTransfer.files?.[0]
-        console.log(droppedFile)
+
         if (droppedFile) setImageFile(droppedFile)
     }
     // Reset state and clear file input value
