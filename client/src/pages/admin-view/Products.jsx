@@ -8,7 +8,11 @@ import {
     SheetTitle,
 } from '@/components/ui/sheet'
 import { addProductFormElements } from '@/config'
+import { AddNewProduct, fetchAllProducts } from '@/store/admin/product-slice'
 import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { toast } from '@/components/ui/toast'
+import AdminProductTile from './ProductTile'
 
 const initialFormData = {
     image: null,
@@ -28,6 +32,8 @@ const AdminProducts = () => {
     const [imageFile, setImageFile] = useState(null)
     const [uploadedImageUrl, setUploadedImageUrl] = useState('')
     const [imageLoadingState, setImageLoadingState] = useState(false)
+    const { productList } = useSelector((state) => state.adminProductsR)
+    const dispatch = useDispatch()
 
     // ✅ Sync Cloudinary URL into formData.image whenever upload succeeds
     useEffect(() => {
@@ -39,8 +45,25 @@ const AdminProducts = () => {
         }
     }, [uploadedImageUrl])
 
+    useEffect(() => {
+        dispatch(fetchAllProducts())
+    }, [dispatch])
+
     function onSubmit(e) {
         e.preventDefault()
+        dispatch(AddNewProduct({ ...formData, image: uploadedImageUrl })).then(
+            (data) => {
+                if (data?.payload?.success) {
+                    dispatch(fetchAllProducts())
+                    setImageFile(null)
+                    setFormData(initialFormData)
+                    setOpenCreateProductsDialogue(false)
+                    toast.add({
+                        title: 'Product Added Sucessfully ',
+                    })
+                }
+            },
+        )
     }
 
     return (
@@ -53,7 +76,15 @@ const AdminProducts = () => {
                     Add New Product
                 </Button>
             </div>
-            <div className='grip gap-4 md:grid-cols-3 lg:grid-cols-4'>
+            {/* Product List  */}
+            <div className='grid gap-4 md:grid-cols-3 lg:grid-cols-4'>
+                {productList && productList.length > 0
+                    ? productList.map((productItem) => (
+                          <AdminProductTile product={productItem} />
+                      ))
+                    : null}
+            </div>
+            <div className='grid gap-4 md:grid-cols-3 lg:grid-cols-4'>
                 <Sheet
                     open={openCreateProductsDialogue}
                     onOpenChange={() => setOpenCreateProductsDialogue(false)}
@@ -68,8 +99,8 @@ const AdminProducts = () => {
                                 setImageFile={setImageFile}
                                 uploadedImageUrl={uploadedImageUrl}
                                 setUploadedImageUrl={setUploadedImageUrl}
-                                imageLoadingState={imageLoadingState}
                                 setImageLoadingState={setImageLoadingState}
+                                imageLoadingState={imageLoadingState}
                             />
                             <CommonForm
                                 formControls={addProductFormElements}
