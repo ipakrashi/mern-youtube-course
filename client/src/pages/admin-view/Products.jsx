@@ -1,3 +1,4 @@
+import ProductImageUpload from '@/components/admin-view/ImageUpload'
 import CommonForm from '@/components/common/Form'
 import { Button } from '@/components/ui/button'
 import {
@@ -24,6 +25,8 @@ const AdminProducts = () => {
     const [openCreateProductsDialogue, setOpenCreateProductsDialogue] =
         useState(false)
     const [formData, setFormData] = useState(initialFormData)
+    const [imageFile, setImageFile] = useState(null)
+    const [uploadedImageUrl, setUploadedImageUrl] = useState('')
 
     function onSubmit(e) {
         e.preventDefault()
@@ -39,26 +42,33 @@ const AdminProducts = () => {
                     Add New Product
                 </Button>
             </div>
-            <div className='grip gap-4 md:grid-cols-3 lg:grid-cols-4'></div>
-            <Sheet
-                open={openCreateProductsDialogue}
-                onOpenChange={() => setOpenCreateProductsDialogue(false)}
-            >
-                <SheetContent side='right' className='overflow-auto'>
-                    <SheetHeader>
-                        <SheetTitle>Add New Product</SheetTitle>
-                    </SheetHeader>
-                    <div className='py-6 px-4'>
-                        <CommonForm
-                            formControls={addProductFormElements}
-                            formData={formData}
-                            setFormData={setFormData}
-                            buttonText='Add Product'
-                            onSubmit={onSubmit}
-                        />
-                    </div>
-                </SheetContent>
-            </Sheet>
+            <div className='grip gap-4 md:grid-cols-3 lg:grid-cols-4'>
+                <Sheet
+                    open={openCreateProductsDialogue}
+                    onOpenChange={() => setOpenCreateProductsDialogue(false)}
+                >
+                    <SheetContent side='right' className='overflow-auto'>
+                        <SheetHeader>
+                            <SheetTitle>Add New Product</SheetTitle>
+                        </SheetHeader>
+                        <div className='p-6'>
+                            <ProductImageUpload
+                                imageFile={imageFile}
+                                setImageFile={setImageFile}
+                                uploadedImageUrl={uploadedImageUrl}
+                                setUploadedImageUrl={setUploadedImageUrl}
+                            />
+                            <CommonForm
+                                formControls={addProductFormElements}
+                                formData={formData}
+                                setFormData={setFormData}
+                                buttonText='Add Product'
+                                onSubmit={onSubmit}
+                            />
+                        </div>
+                    </SheetContent>
+                </Sheet>
+            </div>
         </>
     )
 }

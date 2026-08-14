@@ -1,0 +1,95 @@
+import { useRef } from 'react'
+import { Input } from '../ui/input'
+import { Label } from '../ui/label'
+import { UploadCloudIcon, XIcon } from 'lucide-react'
+import { Button } from '../ui/button'
+
+function ProductImageUpload({
+    imageFile,
+    setImageFile,
+    uploadedImageUrl,
+    setUploadedImageUrl,
+}) {
+    const inputRef = useRef(null)
+
+    const handleImageFileChange = (e) => {
+        const selectedFile = e.target.files?.[0]
+        console.log(selectedFile)
+
+        if (selectedFile) setImageFile(selectedFile)
+    }
+
+    const handleDragOver = (e) => {
+        e.preventDefault()
+    }
+    const handleDrop = (e) => {
+        e.preventDefault()
+        const droppedFile = e.dataTransfer.files?.[0]
+        console.log(droppedFile)
+        if (droppedFile) setImageFile(droppedFile)
+    }
+    // Reset state and clear file input value
+    const handleRemoveImage = () => {
+        setImageFile(null)
+        if (inputRef.current) {
+            inputRef.current.value = ''
+        }
+    }
+
+    return (
+        <div className='w-full mx-auto max-w-md mt-4'>
+            <Label className='text-lg mb-2 font-semibold block'>
+                Upload Image
+            </Label>
+            <div
+                className='border-2 border-dashed mb-3 rounded-lg p-4'
+                onDragOver={handleDragOver}
+                onDrop={handleDrop}
+            >
+                <Input
+                    id='image-upload'
+                    type='file'
+                    className='hidden'
+                    ref={inputRef}
+                    onChange={handleImageFileChange}
+                />
+                {!imageFile ? (
+                    <Label
+                        htmlFor='image-upload'
+                        className='flex flex-col items-center justify-center h-32 cursor-pointer'
+                    >
+                        <UploadCloudIcon className='w-10 h-10 text-muted-foreground mb-2' />
+                        <span>Drag & Drop Or Click to Upload </span>
+                    </Label>
+                ) : (
+                    <div className='flex items-center justify-between'>
+                        <div className='flex items-center gap-3'>
+                            {/* Thumbnail Preview */}
+                            <img
+                                src={URL.createObjectURL(imageFile)}
+                                alt='Preview'
+                                className='w-12 h-12 object-cover rounded-md border'
+                            />
+                            <p className='text-sm font-medium truncate max-w-45'>
+                                {imageFile.name}
+                            </p>
+                        </div>
+                        {/* Clear/Remove Button */}
+                        <Button
+                            type='button'
+                            variant='ghost'
+                            size='icon'
+                            className='text-muted-foreground hover:text-foreground'
+                            onClick={handleRemoveImage}
+                        >
+                            <XIcon className='w-5 h-5' />
+                            <span className='sr-only'>Remove File</span>
+                        </Button>
+                    </div>
+                )}
+            </div>
+        </div>
+    )
+}
+
+export default ProductImageUpload
