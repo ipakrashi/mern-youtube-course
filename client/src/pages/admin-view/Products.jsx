@@ -8,7 +8,7 @@ import {
     SheetTitle,
 } from '@/components/ui/sheet'
 import { addProductFormElements } from '@/config'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const initialFormData = {
     image: null,
@@ -27,6 +27,17 @@ const AdminProducts = () => {
     const [formData, setFormData] = useState(initialFormData)
     const [imageFile, setImageFile] = useState(null)
     const [uploadedImageUrl, setUploadedImageUrl] = useState('')
+    const [imageLoadingState, setImageLoadingState] = useState(false)
+
+    // ✅ Sync Cloudinary URL into formData.image whenever upload succeeds
+    useEffect(() => {
+        if (uploadedImageUrl) {
+            setFormData((prev) => ({
+                ...prev,
+                image: uploadedImageUrl,
+            }))
+        }
+    }, [uploadedImageUrl])
 
     function onSubmit(e) {
         e.preventDefault()
@@ -57,6 +68,8 @@ const AdminProducts = () => {
                                 setImageFile={setImageFile}
                                 uploadedImageUrl={uploadedImageUrl}
                                 setUploadedImageUrl={setUploadedImageUrl}
+                                imageLoadingState={imageLoadingState}
+                                setImageLoadingState={setImageLoadingState}
                             />
                             <CommonForm
                                 formControls={addProductFormElements}

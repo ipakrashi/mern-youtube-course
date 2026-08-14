@@ -6,6 +6,7 @@ import connectDB from '../server/db/dbConnect.js'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import authRouter from './routes/auth/authRoutes.js'
+import adminProductRouter from './routes/admin/productRoutes.js'
 dns.setServers(['8.8.8.8', '8.8.4.4'])
 const app = express()
 const PORT = process.env.PORT || 3000
@@ -34,6 +35,7 @@ app.use(express.json())
 
 // Routes
 app.use('/api/auth', authRouter)
+app.use('/api/admin/products', adminProductRouter)
 
 // Custom Error Handlers
 
