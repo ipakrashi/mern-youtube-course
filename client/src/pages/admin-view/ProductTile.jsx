@@ -2,14 +2,19 @@ import ProductImageUpload from '@/components/admin-view/ImageUpload'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
 
-function AdminProductTile({ product }) {
+function AdminProductTile({
+    product,
+    setCurrentEditedId,
+    setOpenCreateProductsDialogue,
+    setFormData,
+}) {
     return (
         <Card>
             <div className='w-full max-w-sm mx-auto'>
                 <div className='relative'>
                     <img
-                        src={product?.image}
-                        alt={product?.title}
+                        src={product?.image || null}
+                        alt={product?.title || 'Product Image'}
                         className='w-full h-75 object-cover rounded-t-lg'
                     />
                 </div>
@@ -30,7 +35,15 @@ function AdminProductTile({ product }) {
                         ) : null}
                     </div>
                     <CardFooter className='flex justify-between items-center'>
-                        <Button>Edit</Button>
+                        <Button
+                            onClick={() => {
+                                setOpenCreateProductsDialogue(true)
+                                setCurrentEditedId(product?._id)
+                                setFormData(product)
+                            }}
+                        >
+                            Edit
+                        </Button>
                         <Button>Delete</Button>
                     </CardFooter>
                 </CardContent>

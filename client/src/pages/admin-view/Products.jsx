@@ -8,7 +8,11 @@ import {
     SheetTitle,
 } from '@/components/ui/sheet'
 import { addProductFormElements } from '@/config'
-import { AddNewProduct, fetchAllProducts } from '@/store/admin/product-slice'
+import {
+    AddNewProduct,
+    editProduct,
+    fetchAllProducts,
+} from '@/store/admin/product-slice'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { toast } from '@/components/ui/toast'
@@ -32,6 +36,7 @@ const AdminProducts = () => {
     const [imageFile, setImageFile] = useState(null)
     const [uploadedImageUrl, setUploadedImageUrl] = useState('')
     const [imageLoadingState, setImageLoadingState] = useState(false)
+    const [currentEditedId, setCurrentEditedId] = useState(null)
     const { productList } = useSelector((state) => state.adminProductsR)
     const dispatch = useDispatch()
 
@@ -51,8 +56,23 @@ const AdminProducts = () => {
 
     function onSubmit(e) {
         e.preventDefault()
-        dispatch(AddNewProduct({ ...formData, image: uploadedImageUrl })).then(
-            (data) => {
+
+        if (currentEditedId !== null) {
+            dispatch(editProduct({ id: currentEditedId, formData })).then(
+                (data) => {
+                    if (data?.payload?.success) {
+                        dispatch(fetchAllProducts())
+                        setFormData(initialFormData)
+                        setOpenCreateProductsDialogue(false)
+                        setCurrentEditedId(null)
+                        toast.add({ title: 'Product Updated Successfully' })
+                    }
+                },
+            )
+        } else {
+            dispatch(
+                AddNewProduct({ ...formData, image: uploadedImageUrl }),
+            ).then((data) => {
                 if (data?.payload?.success) {
                     dispatch(fetchAllProducts())
                     setImageFile(null)
@@ -62,8 +82,8 @@ const AdminProducts = () => {
                         title: 'Product Added Sucessfully ',
                     })
                 }
-            },
-        )
+            })
+        }
     }
 
     return (
@@ -80,18 +100,34 @@ const AdminProducts = () => {
             <div className='grid gap-4 md:grid-cols-3 lg:grid-cols-4'>
                 {productList && productList.length > 0
                     ? productList.map((productItem) => (
-                          <AdminProductTile product={productItem} />
+                          <AdminProductTile
+                              key={productItem._id}
+                              product={productItem}
+                              setCurrentEditedId={setCurrentEditedId}
+                              setOpenCreateProductsDialogue={
+                                  setOpenCreateProductsDialogue
+                              }
+                              setFormData={setFormData}
+                          />
                       ))
                     : null}
             </div>
             <div className='grid gap-4 md:grid-cols-3 lg:grid-cols-4'>
                 <Sheet
                     open={openCreateProductsDialogue}
-                    onOpenChange={() => setOpenCreateProductsDialogue(false)}
+                    onOpenChange={() => {
+                        setOpenCreateProductsDialogue(false)
+                        setCurrentEditedId(null)
+                        setFormData(initialFormData)
+                    }}
                 >
                     <SheetContent side='right' className='overflow-auto'>
                         <SheetHeader>
-                            <SheetTitle>Add New Product</SheetTitle>
+                            <SheetTitle>
+                                {!currentEditedId
+                                    ? 'Add New Product'
+                                    : `Edit Product - ${currentEditedId}`}
+                            </SheetTitle>
                         </SheetHeader>
                         <div className='p-6'>
                             <ProductImageUpload
@@ -101,12 +137,22 @@ const AdminProducts = () => {
                                 setUploadedImageUrl={setUploadedImageUrl}
                                 setImageLoadingState={setImageLoadingState}
                                 imageLoadingState={imageLoadingState}
+                                isEditMode={currentEditedId !== null}
                             />
                             <CommonForm
                                 formControls={addProductFormElements}
                                 formData={formData}
                                 setFormData={setFormData}
-                                buttonText='Add Product'
+                                buttonText={
+                                    !currentEditedId
+                                        ? 'Add Product'
+                                        : 'Edit Product'
+                                }
+                                placeholder={
+                                    currentEditedId
+                                        ? 'Enter Sale Price or 0'
+                                        : ''
+                                }
                                 onSubmit={onSubmit}
                             />
                         </div>

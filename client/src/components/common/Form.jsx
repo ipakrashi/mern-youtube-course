@@ -16,6 +16,7 @@ const CommonForm = ({
     setFormData,
     onSubmit,
     buttonText,
+    placeholder,
 }) => {
     // Single handler for all state changes
     const handleChange = (name, value) => {
@@ -33,7 +34,7 @@ const CommonForm = ({
                 return (
                     <Input
                         name={controlItem.name}
-                        placeholder={controlItem.placeholder}
+                        placeholder={placeholder}
                         id={controlItem.name}
                         type={controlItem.type || 'text'}
                         value={value}
