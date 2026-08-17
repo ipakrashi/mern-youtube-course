@@ -17,6 +17,7 @@ const CommonForm = ({
     onSubmit,
     buttonText,
     placeholder,
+    isBtnDisabled,
 }) => {
     // Single handler for all state changes
     const handleChange = (name, value) => {
@@ -115,7 +116,11 @@ const CommonForm = ({
                     </div>
                 ))}
             </div>
-            <Button className='mt-2 w-full' type='submit'>
+            <Button
+                className='mt-2 w-full'
+                type='submit'
+                disabled={isBtnDisabled}
+            >
                 {buttonText || 'Submit'}
             </Button>
         </form>

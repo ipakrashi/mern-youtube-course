@@ -10,6 +10,7 @@ import {
 import { addProductFormElements } from '@/config'
 import {
     AddNewProduct,
+    deleteProduct,
     editProduct,
     fetchAllProducts,
 } from '@/store/admin/product-slice'
@@ -86,6 +87,21 @@ const AdminProducts = () => {
         }
     }
 
+    function isFormValid() {
+        return Object.keys(formData)
+            .map((key) => formData[key] !== '')
+            .every((item) => item)
+    }
+
+    function handleDelete(getCurrentProductId) {
+        console.log(getCurrentProductId)
+        dispatch(deleteProduct(getCurrentProductId)).then((data) => {
+            if (data?.payload?.success) {
+                dispatch(fetchAllProducts())
+            }
+        })
+    }
+
     return (
         <>
             <div className='mb-5 w-full flex justify-end'>
@@ -108,6 +124,7 @@ const AdminProducts = () => {
                                   setOpenCreateProductsDialogue
                               }
                               setFormData={setFormData}
+                              handleDelete={handleDelete}
                           />
                       ))
                     : null}
@@ -153,6 +170,7 @@ const AdminProducts = () => {
                                         ? 'Enter Sale Price or 0'
                                         : ''
                                 }
+                                isBtnDisabled={!isFormValid()}
                                 onSubmit={onSubmit}
                             />
                         </div>

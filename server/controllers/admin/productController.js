@@ -1,5 +1,5 @@
 import asyncHandler from 'express-async-handler'
-import { imageUploadUtil } from '../../helpers/cloudinary.js'
+import { imageUploadUtil, imageDeleteUtil } from '../../helpers/cloudinary.js'
 import productModel from '../../models/productModel.js'
 import mongoose from 'mongoose'
 
@@ -105,7 +105,8 @@ const editProduct = asyncHandler(async (req, res) => {
         findProduct.category = category || findProduct.category
         findProduct.brand = brand || findProduct.brand
         findProduct.price = price || findProduct.price
-        findProduct.salePrice = salePrice || findProduct.salePrice
+        findProduct.salePrice =
+            salePrice === '' ? 0 : salePrice || findProduct.salePrice
         findProduct.totalStock = totalStock || findProduct.totalStock
 
         await findProduct.save()
@@ -123,7 +124,22 @@ const editProduct = asyncHandler(async (req, res) => {
 const deleteProduct = asyncHandler(async (req, res) => {
     try {
         const { id } = req.params
-        const deletedProduct = await productModel.findByIdAndDelete(id)
+
+        const findProduct = await productModel.findById(id)
+
+        if (!findProduct) {
+            return res
+                .status(404)
+                .json({ success: false, message: 'Product Not Found' })
+        }
+
+        // Delete image from Cloudinary before deleting DB record
+        if (findProduct.image) {
+            await imageDeleteUtil(findProduct.image)
+        }
+
+        await productModel.findByIdAndDelete(id)
+
         res.status(200).json({ success: true, message: 'Product Deleted' })
     } catch (error) {
         console.log(error)
