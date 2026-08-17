@@ -30,7 +30,7 @@ function HeaderRightContent() {
     }
 
     return (
-        <div className='flex lg:items-center lg:flex-row gap-4 flex-col'>
+        <div className='flex items-center flex-row gap-4'>
             <Button variant='outline' size='icon'>
                 <ShoppingCart className='w-6 h-6' />
                 <span className='sr-only'>Cart</span>
@@ -110,7 +110,7 @@ const ShoppingHeader = () => {
                     </SheetTrigger>
                     <SheetContent side='left' className='w-full max-w-xs pt-16'>
                         <MenuItems />
-                        <div className='mt-6 border-t pt-4'>
+                        <div className='mt-6 border-t pt-4 flex justify-center'>
                             <HeaderRightContent />
                         </div>
                     </SheetContent>
