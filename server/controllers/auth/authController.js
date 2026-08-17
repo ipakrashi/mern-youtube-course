@@ -37,7 +37,7 @@ const loginUser = asyncHandler(async (req, res) => {
                 email: user.email,
             },
             'CLIENT_SECRET_KEY',
-            { expiresIn: '60m' },
+            { expiresIn: '1d' },
         )
         // 4. Set Cookie and Return User Data
         res.cookie('token', token, { httpOnly: true, secure: false })
@@ -89,7 +89,11 @@ const registerUser = asyncHandler(async (req, res) => {
 const logoutUser = asyncHandler(async (req, res) => {
     try {
         // 1. Clear Cookie
-        res.clearCookie('token')
+        res.clearCookie('token', {
+            httpOnly: true,
+            secure: false,
+            path: '/',
+        })
             .status(200)
             .json({ success: true, message: 'User Logged Out' })
     } catch (error) {
