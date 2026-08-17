@@ -7,6 +7,8 @@ import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import authRouter from './routes/auth/authRoutes.js'
 import adminProductRouter from './routes/admin/productRoutes.js'
+import shopProductsRouter from './routes/shop-view/productViewRoutes.js'
+
 dns.setServers(['8.8.8.8', '8.8.4.4'])
 const app = express()
 const PORT = process.env.PORT || 3000
@@ -36,6 +38,7 @@ app.use(express.json())
 // Routes
 app.use('/api/auth', authRouter)
 app.use('/api/admin/products', adminProductRouter)
+app.use('/api/shop/products', shopProductsRouter)
 
 // Custom Error Handlers
 
