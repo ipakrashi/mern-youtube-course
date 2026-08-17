@@ -12,6 +12,5 @@ const getFilteredProducts = asyncHandler(async (req, res) => {
         console.log(error)
         res.status(500).json({ success: false, message: 'Some Error Occurred' })
     }
-    res.status(200).json()
 })
 export { getFilteredProducts }

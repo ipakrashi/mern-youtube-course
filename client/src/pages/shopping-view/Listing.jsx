@@ -66,7 +66,10 @@ const ShoppingListing = () => {
                 <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4'>
                     {productList && productList.length > 0
                         ? productList.map((productItem) => (
-                              <ShoppingProductTile product={productItem} />
+                              <ShoppingProductTile
+                                  key={productItem._id || productItem.id}
+                                  product={productItem}
+                              />
                           ))
                         : null}
                 </div>
