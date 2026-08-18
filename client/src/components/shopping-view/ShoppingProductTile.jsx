@@ -13,7 +13,7 @@ const ShoppingProductTile = ({ product }) => {
                         className='w-full h-75 object-fill rounded-t-lg '
                     />
                     {product.salePrice > 0 ? (
-                        <Badge className='absolute top-2 left-2 bg-red-500 hover:bg-red-600'>
+                        <Badge className='absolute top-2 left-2 bg-red-500 hover:bg-red-600 text-white p-1 rounded font-extrabold text-xs'>
                             Sale
                         </Badge>
                     ) : null}
@@ -21,10 +21,10 @@ const ShoppingProductTile = ({ product }) => {
                 <CardContent className='p-4'>
                     <h2 className='text-xl font-bold mb-2'>{product.title}</h2>
                     <div className='flex justify-between items-center mb-2'>
-                        <span className='text-sm text-muted-foreground'>
+                        <span className='text-xl text-muted-foreground'>
                             {product?.category}
                         </span>
-                        <span className='text-sm text-muted-foreground'>
+                        <span className='text-xl text-muted-foreground'>
                             {product?.brand}
                         </span>
                     </div>
@@ -32,10 +32,12 @@ const ShoppingProductTile = ({ product }) => {
                         <span
                             className={`${product.salePrice > 0 ? 'line-through' : ''} text-lg font-semibold text-primary`}
                         >
-                            {product?.price}
+                            ${product?.price}
                         </span>
                         <span className='text-lg font-semibold text-primary'>
-                            {product.salePrice > 0 ? product?.salePrice : null}
+                            {product.salePrice > 0
+                                ? `$${product?.salePrice}`
+                                : null}
                         </span>
                     </div>
                 </CardContent>

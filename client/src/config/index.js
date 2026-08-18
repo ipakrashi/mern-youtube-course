@@ -163,19 +163,19 @@ export const sortOptions = [
 
 export const filterOptions = {
     Category: [
-        { id: 'men', label: 'Men' },
-        { id: 'women', label: 'Women' },
-        { id: 'kids', label: 'Kids' },
-        { id: 'accessories', label: 'Accessories' },
-        { id: 'footwear', label: 'Footwear' },
+        { id: 'Men', label: 'Men' },
+        { id: 'Women', label: 'Women' },
+        { id: 'Kids', label: 'Kids' },
+        { id: 'Accessories', label: 'Accessories' },
+        { id: 'Footwear', label: 'Footwear' },
     ],
 
     Brand: [
-        { id: 'nike', label: 'Nike' },
-        { id: 'adidas', label: 'Adidas' },
-        { id: 'puma', label: 'Puma' },
-        { id: 'levi', label: "Levi's" },
-        { id: 'zara', label: 'Zara' },
-        { id: 'h&m', label: 'H&M' },
+        { id: 'Nike', label: 'Nike' },
+        { id: 'Adidas', label: 'Adidas' },
+        { id: 'Puma', label: 'Puma' },
+        { id: 'Levi', label: "Levi's" },
+        { id: 'Zara', label: 'Zara' },
+        { id: 'H&M', label: 'H&M' },
     ],
 }
